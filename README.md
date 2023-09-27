@@ -1,5 +1,5 @@
-6. Flashcard Study Tool
-Features:
+# Flashcard Study Tool
+## Features:
 
 Create decks of flashcards on various topics.
 Display one side of the card and reveal the other side on click.
