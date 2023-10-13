@@ -67,6 +67,9 @@ Dark Mode: Implement a light/dark theme toggle.
 
 
 PI
+
+#INSTALL SELENIUM BEFORE RUNNING THIS CODE
+#pip3 install selenium
 '
 D_TOKEN="{3D8F1F55-188B-4C3B-AAD6-FF93A08273FD}"
 EMAIL_ADDRESS="sitemassoudyan@gmail.com"
@@ -74,11 +77,9 @@ EMAIL_PASSWORD="Hejsa123dethhererminNyeKODe"
 EMAIL_ADDRESS_RECIEVER="massoudyan@hotmail.com"
 
 from datetime import datetime, timedelta
+from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 
 import time
 
@@ -107,8 +108,7 @@ def book(token):
     formatted_date = two_weeks_from_today.strftime('%d-%m-%Y')
 
     # Initialize Selenium WebDriver
-    options = webdriver.FirefoxOptions()
-    driver = webdriver.Firefox(options=options)
+    browser_driver = Service('/usr/lib/chromium-browser/chromedriver')
 
     # Navigate to the starting page
     driver.get(f"https://www.eadministration.dk/kunde/kundemenu.asp?logintoken={d_token}")
