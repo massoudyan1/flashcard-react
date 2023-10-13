@@ -64,3 +64,76 @@ User Accounts: Add authentication and let users create accounts to save their de
 Import/Export: Let users import decks from or export to JSON files.
 Tags: Allow adding tags to flashcards for better categorization.
 Dark Mode: Implement a light/dark theme toggle.
+
+
+PI
+'
+D_TOKEN="{3D8F1F55-188B-4C3B-AAD6-FF93A08273FD}"
+EMAIL_ADDRESS="sitemassoudyan@gmail.com"
+EMAIL_PASSWORD="Hejsa123dethhererminNyeKODe"
+EMAIL_ADDRESS_RECIEVER="massoudyan@hotmail.com"
+
+from datetime import datetime, timedelta
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+
+import time
+
+# load dotenv
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+def book():
+    # Daniel's token
+    d_token = os.getenv('D_TOKEN')
+
+    # Calculate the date 2 weeks from today
+    two_weeks_from_today = datetime.now() + timedelta(weeks=2)
+
+    # Check if the date is a Monday. Monday the last team is yoga. the second to last team is Sauna.
+    is_monday = two_weeks_from_today.weekday() == 0
+
+    # Format the date
+    formatted_date = two_weeks_from_today.strftime('%d-%m-%Y')
+
+    # Initialize Selenium WebDriver
+    driver = webdriver.Chrome()
+
+    # Navigate to the starting page
+    driver.get(f"https://www.eadministration.dk/kunde/kundemenu.asp?logintoken={d_token}")
+
+    # Wait for the page to load
+    time.sleep(2)
+
+    # Navigate to the booking page
+    driver.get(f"https://www.eadministration.dk/kunde/holdoversigt.asp?id=10&dag={formatted_date}")
+
+    # Wait for the page to load
+    time.sleep(2)
+
+    # Find event
+    if is_monday:
+        checkbox = driver.find_element(By.XPATH, "//div[@id='hold']/table/tbody/tr[last()-1]/td")
+
+    else:
+        checkbox = driver.find_element(By.XPATH, "//div[@id='hold']/table/tbody/tr[last()]/td")
+
+    # Click event
+    checkbox.click()
+
+    # Find assign booking
+    assign_element = driver.find_element(By.CLASS_NAME, "assignbooking")
+
+    time.sleep(1)
+
+    # CLick assign
+    assign_element.click()
+
+    # Wait for the page to load
+    time.sleep(2)
+
+book()
+'
