@@ -77,6 +77,8 @@ from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 
 import time
 
@@ -86,21 +88,27 @@ import os
 
 load_dotenv()
 
-def book():
+tokens = [os.getenv('D_TOKEN'), os.getenv('T_TOKEN')]
+
+def book(token):
     # Daniel's token
-    d_token = os.getenv('D_TOKEN')
+    d_token = token
 
     # Calculate the date 2 weeks from today
-    two_weeks_from_today = datetime.now() + timedelta(weeks=2)
+    two_weeks_from_today = datetime.now() + timedelta(days=15)
 
     # Check if the date is a Monday. Monday the last team is yoga. the second to last team is Sauna.
-    is_monday = two_weeks_from_today.weekday() == 0
+    is_monday = two_weeks_from_today.weekday() == 0   
+    
+    # Check if the date is a Sunday. Sunday the last team is yoga. the second to last team is Sauna.
+    is_sunday = two_weeks_from_today.weekday() == 7
 
     # Format the date
     formatted_date = two_weeks_from_today.strftime('%d-%m-%Y')
 
     # Initialize Selenium WebDriver
-    driver = webdriver.Chrome()
+    options = webdriver.FirefoxOptions()
+    driver = webdriver.Firefox(options=options)
 
     # Navigate to the starting page
     driver.get(f"https://www.eadministration.dk/kunde/kundemenu.asp?logintoken={d_token}")
@@ -115,9 +123,10 @@ def book():
     time.sleep(2)
 
     # Find event
+    if is_sunday:
+        exit(1)
     if is_monday:
         checkbox = driver.find_element(By.XPATH, "//div[@id='hold']/table/tbody/tr[last()-1]/td")
-
     else:
         checkbox = driver.find_element(By.XPATH, "//div[@id='hold']/table/tbody/tr[last()]/td")
 
@@ -134,6 +143,9 @@ def book():
 
     # Wait for the page to load
     time.sleep(2)
+    driver.quit()
 
-book()
+for t in tokens:
+    book(t)
+
 '
