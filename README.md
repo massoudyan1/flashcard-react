@@ -149,3 +149,22 @@ for t in tokens:
     book(t)
 
 '
+
+
+'
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+chrome_options = Options()
+chrome_options.add_argument('--headless')  # Run headless to save resources
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+
+driver = webdriver.Chrome(executable_path='/usr/lib/chromium-browser/chromedriver', options=chrome_options)
+
+'
+
+'
+sudo apt-get install chromium-chromedriver
+
+'
